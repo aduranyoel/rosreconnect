@@ -1,0 +1,7 @@
+:foreach k in={"WA1"; "WAN2"; "WAN3"; "WAN4"; "WAN5"} do={
+:if ( [/ping 10.180.0.30 routing-table=$k count=2 ] >0 ) do={
+} else={
+/ip dhcp-client release [find interface=$k];
+:log info message="0==||====> Release $k";
+}
+}
