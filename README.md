@@ -1,4 +1,4 @@
-#### METODOS PARA RECONECCION DE INTERFAZ A WIFI_ETECSA CON ROUTEROS
+#### RECONECCION DE INTERFAZ A WIFI_ETECSA CON ROUTEROS
 
 ##### author: Tony Duran <yoet92@gmail.com>
 ##### git: https://github.com/yoet92/rosreconnect.git
