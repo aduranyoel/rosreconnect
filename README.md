@@ -1,7 +1,9 @@
-#### RECONECCION DE INTERFAZ A WIFI_ETECSA CON ROUTEROS
+## RECONECCION DE INTERFAZ A WIFI_ETECSA CON ROUTEROS
 
 
-#### (1) POR PING (OBTENIENDO INTERFACES AUTOMATICAMENTE)
+##### (1) POR PING (OBTENIENDO INTERFACES AUTOMATICAMENTE)
+
+###### NOTA: Es necesario que el "Routing Mark" sea igual al nombre de la interfaz.
 ```
 /system scheduler
 add interval=20s name=RECONNECT1 on-event=":global a {\"\"}\r\
@@ -16,7 +18,7 @@ add interval=20s name=RECONNECT1 on-event=":global a {\"\"}\r\
     \n}\r\
     \n}" policy=ftp,reboot,read,write,policy,test,password,sniff,sensitive,romon start-time=startup
 ```
-#### (2) POR RX-RATE (OBTENIENDO INTERFACES AUTOMATICAMENTE)
+##### (2) POR RX-RATE (OBTENIENDO INTERFACES AUTOMATICAMENTE)
 ```
 /system scheduler
 add interval=10s name=RECONNECT2 on-event=":global a {\"\"}\r\
