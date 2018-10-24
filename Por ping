@@ -4,6 +4,8 @@ author: Tony Duran <yoet92@gmail.com>
 git: https://github.com/yoet92/rosreconnect.git
 
 
+NOTA: Es necesario que el "Routing Mark" sea igual al nombre de la interfaz.
+
 /system scheduler
 add interval=20s name=RECONNECT1 on-event=":global a {\"\"}\r\
     \n:for i from=0 to=([/interface wireless print count-only]-2) do={\r\
