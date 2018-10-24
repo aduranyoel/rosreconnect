@@ -1,0 +1,47 @@
+RECONECCION DE INTERFAZ A WIFI_ETECSA CON ROUTEROS
+
+author: Tony Duran <yoet92@gmail.com>
+git: https://github.com/yoet92/rosreconnect.git
+
+
+/system scheduler
+add interval=10s name=RECONNECT2 on-event=":global a {\"\"}\r\
+    \n:for i from=0 to=([/interface wireless print count-only]-2) do={\r\
+    \nset (\$a->\$i) [/interface wireless get value-name=name number=\$i]\r\
+    \n}\r\
+    \n:foreach r in=\$a do={\r\
+    \n/interface wireless monitor \$r once do={\r\
+    \n:if (\$\"rx-rate\" = \"---\") do={\r\
+    \n/ip dhcp-client release [find interface=\$r];\r\
+    \n:log info message=\"0==||====> Release \$r\";\r\
+    \n}\r\
+    \n}\r\
+    \n}" policy=ftp,reboot,read,write,policy,test,password,sniff,sensitive,romon start-time=startup
+
+
+
+ESPECIFICANDO INTERFACES:
+
+:foreach r in={"WAN1"; "WAN2"; "WAN3"; "WAN4"; "WAN5"} do={
+/interface wireless monitor $r once do={
+:if ($"rx-rate" = "---") do={
+/ip dhcp-client release [find interface=$r];
+:log info message="0==||====> Release $r";
+}
+}
+}
+
+OBTENIENDO INTERFACES AUTOMATICAMENTE:
+
+:global a {""}
+:for i from=0 to=([/interface wireless print count-only]-2) do={
+set ($a->$i) [/interface wireless get value-name=name number=$i]
+}
+:foreach r in=$a do={
+/interface wireless monitor $r once do={
+:if ($"rx-rate" = "---") do={
+/ip dhcp-client release [find interface=$r];
+:log info message="0==||====> Release $r";
+}
+}
+}

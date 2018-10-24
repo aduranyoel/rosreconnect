@@ -1,0 +1,44 @@
+RECONECCION DE INTERFAZ A WIFI_ETECSA CON ROUTEROS
+
+author: Tony Duran <yoet92@gmail.com>
+git: https://github.com/yoet92/rosreconnect.git
+
+
+/system scheduler
+add interval=20s name=RECONNECT1 on-event=":global a {\"\"}\r\
+    \n:for i from=0 to=([/interface wireless print count-only]-2) do={\r\
+    \nset (\$a->\$i) [/interface wireless get value-name=name number=\$i]\r\
+    \n}\r\
+    \n:foreach k in=\$a do={\r\
+    \n:if ( [/ping 10.180.0.30 routing-table=\$k count=2 ] >0 ) do={\r\
+    \n} else={\r\
+    \n/ip dhcp-client release [find interface=\$k];\r\
+    \n:log info message=\"0==||====> Release \$k\";\r\
+    \n}\r\
+    \n}" policy=ftp,reboot,read,write,policy,test,password,sniff,sensitive,romon start-time=startup
+
+
+
+ESPECIFICANDO INTERFACES:
+
+:foreach k in={"WAN1"; "WAN2"; "WAN3"; "WAN4"; "WAN5"} do={
+:if ( [/ping 10.180.0.30 routing-table=$k count=2 ] >0 ) do={
+} else={
+/ip dhcp-client release [find interface=$k];
+:log info message="0==||====> Release $k";
+}
+}
+
+OBTENIENDO INTERFACES AUTOMATICAMENTE:
+
+:global a {""}
+:for i from=0 to=([/interface wireless print count-only]-2) do={
+set ($a->$i) [/interface wireless get value-name=name number=$i]
+}
+:foreach k in=$a do={
+:if ( [/ping 10.180.0.30 routing-table=$k count=2 ] >0 ) do={
+} else={
+/ip dhcp-client release [find interface=$k];
+:log info message="0==||====> Release $k";
+}
+}
