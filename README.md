@@ -11,7 +11,7 @@ add interval=20s name=RECONNECT1 on-event=":global a {\"\"}\r\
     \nset (\$a->\$i) [/interface wireless get value-name=name number=\$i]\r\
     \n}\r\
     \n:foreach k in=\$a do={\r\
-    \n:if ( [/ping 10.180.0.30 routing-table=\$k count=2 ] >0 ) do={\r\
+    \n:if ( [/ping 10.180.0.30 routing-table=\$k count=4 ] >0 ) do={\r\
     \n} else={\r\
     \n/ip dhcp-client release [find interface=\$k];\r\
     \n:log info message=\"0==||====> Release \$k\";\r\
@@ -34,3 +34,12 @@ add interval=10s name=RECONNECT2 on-event=":global a {\"\"}\r\
     \n}\r\
     \n}" policy=ftp,reboot,read,write,policy,test,password,sniff,sensitive,romon start-time=startup
 ```
+##### (3) POR RENEW
+```
+/system scheduler
+add interval=1m10s name=RECONNECT3 on-event=":for i from=0 to=([/interface wireless print count-only]-2) do={\r\
+    \n/ip dhcp-client renew \$i\r\
+    \n:delay 5\r\
+    \n}" policy=ftp,reboot,read,write,policy,test,password,sniff,sensitive,romon start-time=startup
+```
+
