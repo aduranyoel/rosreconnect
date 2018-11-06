@@ -1,0 +1,18 @@
+RECONECCION DE INTERFAZ A WIFI_ETECSA CON ROUTEROS
+
+author: Tony Duran <yoet92@gmail.com>
+git: https://github.com/yoet92/rosreconnect.git
+
+
+/system scheduler
+add interval=1m10s name=RECONNECT3 on-event=":for i from=0 to=([/interface wireless print count-only]-2) do={\r\
+    \n/ip dhcp-client renew \$i\r\
+    \n:delay 5\r\
+    \n}" policy=ftp,reboot,read,write,policy,test,password,sniff,sensitive,romon start-time=startup
+
+
+
+:for i from=0 to=([/interface wireless print count-only]-2) do={
+/ip dhcp-client renew $i
+:delay 5
+}
